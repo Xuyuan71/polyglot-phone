@@ -96,6 +96,8 @@ a.pill{background:var(--accent-soft);color:var(--accent-d)}
 .ph img{width:100%;height:100%;object-fit:cover;display:block}
 .ph select{position:absolute;left:4px;right:4px;bottom:4px;height:32px;border-radius:8px;border:0;font:inherit;font-size:13px;background:rgba(255,255,255,.92)}
 .ph .x{position:absolute;top:4px;right:4px;width:32px;height:32px;border-radius:16px;border:0;background:rgba(22,32,27,.7);color:#fff;font-size:18px;line-height:1;cursor:pointer}
+.addcol{display:flex;flex-direction:column;gap:8px;aspect-ratio:1/1}
+.addcol .addph{aspect-ratio:auto;flex:1;font-size:12.5px;gap:4px}
 .addph{aspect-ratio:1/1;border:2px dashed var(--line);border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:var(--muted);font-size:13px;cursor:pointer;text-align:center;padding:4px}
 .bar{height:6px;border-radius:3px;background:var(--soft);overflow:hidden;margin-top:8px}
 .bar i{display:block;height:6px;background:var(--accent)}
@@ -176,7 +178,8 @@ dialog::backdrop{background:rgba(22,32,27,.45)}
   </form>
 </dialog>
 
-<input type="file" id="fileIn" accept="image/*" capture="environment" class="sr" aria-hidden="true" tabindex="-1">
+<input type="file" id="fileCam" accept="image/*" capture="environment" class="sr" aria-hidden="true" tabindex="-1">
+<input type="file" id="fileLib" accept="image/*" multiple class="sr" aria-hidden="true" tabindex="-1">
 
 <script>
 (function(){
@@ -603,7 +606,7 @@ function getProject(){ return store('pg_plantnet_project') || PLANTNET_DEFAULT_P
 
 function renderScan(){
   var key = getKey();
-  var h = '<div class="hero" style="padding-bottom:8px"><h2 style="font-size:24px">Scan a plant</h2><div class="alt">Up to 5 photos of the same plant. Close-ups of a leaf, flower or fruit work best.</div></div>';
+  var h = '<div class="hero" style="padding-bottom:8px"><h2 style="font-size:24px">Scan a plant</h2><div class="alt">Take a photo or upload up to 5 from your phone, all of the same plant. Close-ups of a leaf, flower or fruit work best.</div></div>';
   if(!key) h += '<div class="err" style="margin-bottom:14px">Scanning needs a Pl@ntNet API key. <button class="chip" style="height:34px;margin-top:8px;display:block" id="openSet">Add key</button></div>';
   h += '<div class="photos" id="photos"></div>' +
     '<div class="small" style="margin:10px 0 14px">Flora: <b id="projLbl">' + esc(getProject()) + '</b> · <button class="chip" style="height:30px;padding:0 10px;font-size:12.5px" id="chgProj">Change</button></div>' +
@@ -620,25 +623,29 @@ function drawPhotos(){
   el.innerHTML = photos.map(function(p, i){
     return '<div class="ph"><img src="' + p.url + '" alt="Photo ' + (i+1) + '"><button class="x" data-i="' + i + '" aria-label="Remove photo ' + (i+1) + '">×</button>' +
       '<label class="sr" for="org' + i + '">Plant part for photo ' + (i+1) + '</label><select id="org' + i + '" data-i="' + i + '">' + ORGANS.map(function(o){ return '<option value="' + o[0] + '"' + (o[0] === p.organ ? ' selected' : '') + '>' + o[1] + '</option>'; }).join('') + '</select></div>';
-  }).join('') + (photos.length < 5 ? '<button class="addph" id="addPh"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#55625B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8a2 2 0 0 1 2-2h2l2-2h6l2 2h2a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><circle cx="12" cy="13" r="3.5"/></svg>' + (photos.length ? 'Add another' : 'Take or choose photo') + '</button>' : '');
+  }).join('') + (photos.length < 5 ? '<div class="addcol"><button class="addph" id="addCam"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#55625B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8a2 2 0 0 1 2-2h2l2-2h6l2 2h2a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><circle cx="12" cy="13" r="3.5"/></svg>Take photo</button><button class="addph" id="addLib"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#55625B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 17l-5-5-9 8"/></svg>Upload from phone</button></div>' : '');
   el.onclick = function(e){
     var x = e.target.closest('.x');
     if(x){ var i = +x.getAttribute('data-i'); URL.revokeObjectURL(photos[i].url); photos.splice(i,1); renderScan(); return; }
-    if(e.target.closest('#addPh')) $('#fileIn').click();
+    if(e.target.closest('#addCam')) $('#fileCam').click();
+    if(e.target.closest('#addLib')) $('#fileLib').click();
   };
   el.onchange = function(e){ if(e.target.tagName === 'SELECT') photos[+e.target.getAttribute('data-i')].organ = e.target.value; };
 }
-$('#fileIn').addEventListener('change', function(e){
-  var f = e.target.files && e.target.files[0]; e.target.value = '';
-  if(!f) return;
-  shrink(f).then(function(blob){
-    photos.push({blob:blob, url:URL.createObjectURL(blob), organ:'auto'});
-    renderScan();
-  }).catch(function(){
-    photos.push({blob:f, url:URL.createObjectURL(f), organ:'auto'});
+function addFiles(e){
+  var files = Array.prototype.slice.call(e.target.files || []).filter(function(f){ return !f.type || f.type.indexOf('image/') === 0; });
+  e.target.value = '';
+  files = files.slice(0, Math.max(0, 5 - photos.length));
+  if(!files.length) return;
+  Promise.all(files.map(function(f){
+    return shrink(f).catch(function(){ return f; }).then(function(blob){ return {blob:blob, url:URL.createObjectURL(blob), organ:'auto'}; });
+  })).then(function(list){
+    photos = photos.concat(list).slice(0, 5);
     renderScan();
   });
-});
+}
+$('#fileCam').addEventListener('change', addFiles);
+$('#fileLib').addEventListener('change', addFiles);
 function shrink(file){
   return new Promise(function(resolve, reject){
     var img = new Image(), u = URL.createObjectURL(file);
