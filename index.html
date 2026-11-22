@@ -4,7 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0F6E56">
-<title>Polyglot Medicine</title>
+<title>Polyglot Asian Medicine</title>
+<meta name="application-name" content="Polyglot Asian Medicine">
+<meta name="apple-mobile-web-app-title" content="Polyglot">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;600&display=swap">
 <style>
@@ -112,7 +120,7 @@ dialog::backdrop{background:rgba(22,32,27,.45)}
   <div class="wrap">
     <div class="brand">
       <div>
-        <h1>Polyglot Medicine</h1>
+        <h1>Polyglot Asian Medicine</h1>
         <p>Drug names across Asian traditions</p>
       </div>
       <button class="iconbtn" id="settingsBtn" aria-label="Settings">
@@ -582,7 +590,7 @@ function genericPage(root, others){
 /* ===== About ===== */
 function renderAbout(){
   view.innerHTML = '<div class="hero"><h2 style="font-size:24px">About</h2></div>' +
-    '<div class="prose" style="margin-bottom:14px">Polyglot Medicine links the names of traditional drugs across Chinese, Malay, South Asian and other medical languages, with their scientific names, source texts and regions.</div>' +
+    '<div class="prose" style="margin-bottom:14px">Polyglot Asian Medicine links the names of traditional drugs across Chinese, Malay, South Asian and other medical languages, with their scientific names, source texts and regions.</div>' +
     '<div class="prose" style="margin-bottom:18px">This is the phone interface. The full network graph and map remain on the <a href="https://kgraph.sg/polyglot/" target="_blank" rel="noopener">desktop site</a>.</div>' +
     '<section class="blk"><h3>Plant scanning</h3><div class="prose small">The image-based plant species identification service used, is based on the Pl@ntNet recognition API, regularly updated and accessible through the site <a href="https://my.plantnet.org/" target="_blank" rel="noopener">https://my.plantnet.org/</a>. Scan results are suggestions only.</div></section>';
 }

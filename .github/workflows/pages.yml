@@ -33,6 +33,23 @@ jobs:
           else
             echo "PLANTNET_KEY secret not set: scanning will ask users for a key"
           fi
+      - name: Build home-screen icons from the kgraph.sg Polyglot icon
+        run: |
+          cp manifest.webmanifest _site/
+          mkdir -p _site/icons
+          if curl -fsSL --retry 3 https://kgraph.sg/polyglot/favicon.ico -o src-icon.png; then
+            # source is a ~93x91 PNG: square it on black, then scale to each size
+            convert src-icon.png -background black -gravity center -extent 93x93 square.png
+            convert square.png -filter Lanczos -resize 32x32   _site/icons/favicon-32.png
+            convert square.png -filter Lanczos -resize 180x180 _site/icons/apple-touch-icon.png
+            convert square.png -filter Lanczos -resize 192x192 _site/icons/icon-192.png
+            convert square.png -filter Lanczos -resize 512x512 _site/icons/icon-512.png
+            # maskable: keep the artwork inside the central safe zone
+            convert square.png -filter Lanczos -resize 400x400 -background black -gravity center -extent 512x512 _site/icons/icon-maskable-512.png
+            ls -l _site/icons
+          else
+            echo "Could not fetch icon from kgraph.sg; publishing without icons"
+          fi
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

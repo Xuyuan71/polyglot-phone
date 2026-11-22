@@ -1,4 +1,4 @@
-# Polyglot Medicine — phone interface
+# Polyglot Asian Medicine — phone interface
 
 Mobile web interface for the Polyglot Medicine knowledge graph (https://kgraph.sg/polyglot/).
 
