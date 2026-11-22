@@ -37,11 +37,11 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Build home-screen icons from the kgraph.sg Polyglot icon
+      - name: Build home-screen icons from the Polyglot Asian Medicines leaf icon
         continue-on-error: true
         run: |
           mkdir -p _site/icons
-          curl -fsSL --retry 3 https://kgraph.sg/polyglot/favicon.ico -o src-icon.png
+          curl -fsSL --retry 3 "https://static.wixstatic.com/media/589fdb_c5b4674b3f2b4dd0b91ed3579701fe54%7Emv2.png" -o src-icon.png
           python3 -m pip install --quiet pillow
           python3 scripts/make_icons.py src-icon.png _site/icons
           ls -l _site/icons
