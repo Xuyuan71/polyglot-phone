@@ -178,7 +178,7 @@ dialog::backdrop{background:rgba(22,32,27,.45)}
 var API = 'https://api-845065078972.asia-southeast1.run.app/PM2/';
 var GRAPH_URL = 'https://kgraph.sg/polyglot/?drug=';
 var PLANTNET = 'https://my-api.plantnet.org/v2/';
-var PLANTNET_DEFAULT_KEY = '';      // optional: put a domain-restricted Pl@ntNet key here when deploying
+var PLANTNET_DEFAULT_KEY = '__PLANTNET_KEY__';      // optional: put a domain-restricted Pl@ntNet key here when deploying
 var PLANTNET_DEFAULT_PROJECT = 'all';
 
 /* ===== Small helpers ===== */
@@ -590,7 +590,7 @@ function renderAbout(){
 /* ===== Scan ===== */
 var photos = []; // {blob, url, organ}
 var ORGANS = [['auto','Auto'],['leaf','Leaf'],['flower','Flower'],['fruit','Fruit'],['bark','Bark']];
-function getKey(){ return store('pg_plantnet_key') || PLANTNET_DEFAULT_KEY; }
+function getKey(){ var d = PLANTNET_DEFAULT_KEY.indexOf('__') === 0 ? '' : PLANTNET_DEFAULT_KEY; return store('pg_plantnet_key') || d; }
 function getProject(){ return store('pg_plantnet_project') || PLANTNET_DEFAULT_PROJECT; }
 
 function renderScan(){
