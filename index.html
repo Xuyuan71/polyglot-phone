@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0F6E56">
+<title>Polyglot Medicine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;600&display=swap">
+<style>
+:root{
+  --ink:#16201B; --ink2:#3C4842; --muted:#55625B; --line:#DDE3DF; --soft:#EEF1EF; --bg:#FFFFFF; --panel:#F6F8F7;
+  --accent:#0F6E56; --accent-d:#0A4F3E; --accent-soft:#E3F1EC;
+  --warn-bg:#FFF8EC; --warn-line:#F0D9B5; --warn-ink:#5C4A2E; --warn-tag:#FBE7C6; --warn-tag-ink:#8A4B00;
+  --radius:14px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,"Noto Sans SC",system-ui,-apple-system,sans-serif;-webkit-text-size-adjust:100%}
+body{padding-bottom:calc(64px + env(safe-area-inset-bottom))}
+a{color:var(--accent);text-decoration:none}
+button{font:inherit;color:inherit}
+.wrap{max-width:640px;margin:0 auto}
+header.top{position:sticky;top:0;z-index:5;background:var(--bg);padding:calc(12px + env(safe-area-inset-top)) 16px 10px;border-bottom:1px solid transparent}
+header.top.scrolled{border-bottom-color:var(--line)}
+.brand{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.brand h1{margin:0;font-size:19px;font-weight:700;letter-spacing:-.2px}
+.brand p{margin:2px 0 0;font-size:12.5px;color:var(--muted)}
+.iconbtn{width:44px;height:44px;border:1px solid var(--line);background:var(--bg);border-radius:12px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;flex:none}
+.iconbtn.plain{border:0}
+.searchrow{display:flex;gap:10px;margin-top:10px}
+.searchbox{flex:1;height:50px;border:2px solid var(--accent);border-radius:var(--radius);display:flex;align-items:center;gap:8px;padding:0 6px 0 12px;background:var(--bg)}
+.searchbox input{border:0;outline:none;font:inherit;font-size:17px;flex:1;min-width:0;background:transparent;color:var(--ink)}
+.scanbtn{width:50px;height:50px;border-radius:var(--radius);background:var(--accent);display:flex;align-items:center;justify-content:center;flex:none}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:12px 16px 4px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{height:36px;padding:0 14px;border-radius:18px;border:1px solid var(--line);background:var(--bg);font-size:14px;white-space:nowrap;cursor:pointer;flex:none}
+.chip[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink);font-weight:600}
+main{padding:4px 16px 24px}
+.meta{font-size:13px;color:var(--muted);padding:8px 0 6px}
+.list{display:flex;flex-direction:column;gap:10px}
+.card{display:block;padding:14px 16px;border:1px solid var(--line);border-radius:var(--radius);color:var(--ink);background:var(--bg)}
+.card:active{background:var(--panel)}
+.card .row1{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+.card .name{font-size:17px;font-weight:600;overflow-wrap:anywhere}
+.card .sub{font-size:14px;color:var(--ink2);margin-top:4px}
+.card .note{font-size:13px;color:var(--muted);margin-top:4px}
+.card.warn{background:var(--warn-bg);border-color:var(--warn-line)}
+.tag{font-size:12px;font-weight:600;color:var(--accent);background:var(--accent-soft);padding:3px 8px;border-radius:8px;white-space:nowrap;flex:none}
+.tag.grey{color:var(--ink2);background:var(--soft);font-weight:500}
+.tag.warn{color:var(--warn-tag-ink);background:var(--warn-tag)}
+.sci{font-style:italic}
+.hero{padding:6px 0 14px}
+.hero h2{margin:0;font-size:30px;font-weight:700;letter-spacing:-.4px;overflow-wrap:anywhere}
+.hero .alt{font-size:15px;color:var(--muted);margin-top:2px}
+.hero .sciline{font-size:16px;color:var(--ink2);margin-top:6px}
+.tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+section.blk{padding:0 0 18px}
+section.blk>h3{margin:0 0 8px;font-size:12.5px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.6px}
+.box{border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+.box details{border-top:1px solid var(--soft)}
+.box details:first-child{border-top:0}
+.box summary{list-style:none;min-height:52px;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px;cursor:pointer}
+.box summary::-webkit-details-marker{display:none}
+.box summary .l{font-size:15px;font-weight:500}
+.box summary .r{font-size:12.5px;color:var(--muted);display:flex;align-items:center;gap:6px}
+.box details[open] summary .chev{transform:rotate(180deg)}
+.box .inner{padding:0 16px 14px;display:flex;flex-wrap:wrap;gap:6px}
+.pill{font-size:14px;padding:7px 11px;border-radius:16px;background:var(--soft);color:var(--ink);display:inline-block}
+a.pill{background:var(--accent-soft);color:var(--accent-d)}
+.src{padding:12px 14px;border-radius:12px;background:var(--panel);margin-bottom:8px}
+.src b{font-size:15px}
+.src div{font-size:13px;color:var(--muted);margin-top:2px}
+.prose{font-size:15px;line-height:1.5;color:var(--ink2)}
+.links{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.links a{min-height:44px;border:1px solid var(--line);border-radius:10px;display:flex;align-items:center;justify-content:center;text-align:center;font-size:13.5px;font-weight:600;padding:4px}
+.btn{height:52px;border-radius:var(--radius);border:0;background:var(--accent);color:#fff;font-size:16px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:8px;width:100%;cursor:pointer}
+.btn.ghost{background:var(--bg);color:var(--ink);border:1px solid var(--line)}
+.btn[disabled]{opacity:.5}
+.stack{display:flex;flex-direction:column;gap:10px}
+.back{display:flex;align-items:center;gap:2px;margin:0 0 4px -10px}
+.back span{font-size:15px;color:var(--ink2)}
+.empty{padding:40px 8px;text-align:center;color:var(--muted);font-size:15px;line-height:1.5}
+.err{padding:12px 14px;border-radius:12px;background:var(--warn-bg);border:1px solid var(--warn-line);color:var(--warn-ink);font-size:14px;line-height:1.45}
+.spin{width:22px;height:22px;border:3px solid var(--accent-soft);border-top-color:var(--accent);border-radius:50%;animation:sp .8s linear infinite;margin:30px auto}
+@keyframes sp{to{transform:rotate(360deg)}}
+.photos{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.ph{position:relative;aspect-ratio:1/1;border-radius:12px;overflow:hidden;background:var(--soft)}
+.ph img{width:100%;height:100%;object-fit:cover;display:block}
+.ph select{position:absolute;left:4px;right:4px;bottom:4px;height:32px;border-radius:8px;border:0;font:inherit;font-size:13px;background:rgba(255,255,255,.92)}
+.ph .x{position:absolute;top:4px;right:4px;width:32px;height:32px;border-radius:16px;border:0;background:rgba(22,32,27,.7);color:#fff;font-size:18px;line-height:1;cursor:pointer}
+.addph{aspect-ratio:1/1;border:2px dashed var(--line);border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:var(--muted);font-size:13px;cursor:pointer;text-align:center;padding:4px}
+.bar{height:6px;border-radius:3px;background:var(--soft);overflow:hidden;margin-top:8px}
+.bar i{display:block;height:6px;background:var(--accent)}
+.res.top{border:2px solid var(--accent)}
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+.field label{font-size:13px;font-weight:600;color:var(--ink2)}
+.field input,.field select{height:48px;border:1px solid var(--line);border-radius:12px;padding:0 12px;font:inherit;font-size:16px;background:var(--bg);color:var(--ink)}
+.small{font-size:12.5px;color:var(--muted);line-height:1.45}
+nav.tabs{position:fixed;left:0;right:0;bottom:0;z-index:6;background:var(--bg);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom)}
+nav.tabs .in{max-width:640px;margin:0 auto;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));height:64px}
+nav.tabs a{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:12px;color:var(--muted)}
+nav.tabs a[aria-current="page"]{color:var(--accent);font-weight:600}
+nav.tabs a svg{stroke:currentColor}
+dialog{border:0;border-radius:18px;padding:20px;width:min(92vw,440px);color:var(--ink)}
+dialog::backdrop{background:rgba(22,32,27,.45)}
+[hidden]{display:none!important}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+</style>
+</head>
+<body>
+<header class="top" id="top">
+  <div class="wrap">
+    <div class="brand">
+      <div>
+        <h1>Polyglot Medicine</h1>
+        <p>Drug names across Asian traditions</p>
+      </div>
+      <button class="iconbtn" id="settingsBtn" aria-label="Settings">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#16201B" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </div>
+    <form class="searchrow" id="searchForm" role="search">
+      <label class="searchbox">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#55625B" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+        <span class="sr">Search drug or plant names</span>
+        <input id="q" type="search" enterkeyhint="search" autocomplete="off" autocapitalize="off" placeholder="halia, 生姜, ginger, Zingiber…">
+      </label>
+      <a class="scanbtn" href="#scan" aria-label="Scan a plant">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8V6a2 2 0 0 1 2-2h2M16 4h2a2 2 0 0 1 2 2v2M20 16v2a2 2 0 0 1-2 2h-2M8 20H6a2 2 0 0 1-2-2v-2"/><circle cx="12" cy="12" r="3.5"/></svg>
+      </a>
+    </form>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="chips" id="chips" hidden></div>
+  <main id="view" aria-live="polite"></main>
+</div>
+
+<nav class="tabs" aria-label="Main">
+  <div class="in">
+    <a href="#" id="tabSearch">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>Search</a>
+    <a href="#scan" id="tabScan">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8V6a2 2 0 0 1 2-2h2M16 4h2a2 2 0 0 1 2 2v2M20 16v2a2 2 0 0 1-2 2h-2M8 20H6a2 2 0 0 1-2-2v-2"/><circle cx="12" cy="12" r="3.5"/></svg>Scan</a>
+    <a href="#about" id="tabAbout">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg>About</a>
+  </div>
+</nav>
+
+<dialog id="settings">
+  <form method="dialog" id="settingsForm">
+    <h2 style="margin:0 0 6px;font-size:20px">Plant scanning</h2>
+    <p class="small" style="margin:0 0 16px">Scanning uses the Pl@ntNet identification API. Paste a Pl@ntNet API key with this site's domain authorised (my.plantnet.org → API key → expose key → authorised domains).</p>
+    <div class="field">
+      <label for="keyIn">Pl@ntNet API key</label>
+      <input id="keyIn" autocomplete="off" spellcheck="false" placeholder="2b10…">
+    </div>
+    <div class="field">
+      <label for="projIn">Flora</label>
+      <select id="projIn"><option value="all">World flora (all)</option></select>
+      <span class="small" id="projNote">Save a key to load regional floras.</span>
+    </div>
+    <div style="display:flex;gap:10px">
+      <button class="btn ghost" value="cancel" type="submit">Cancel</button>
+      <button class="btn" value="save" type="submit" id="saveSettings">Save</button>
+    </div>
+  </form>
+</dialog>
+
+<input type="file" id="fileIn" accept="image/*" capture="environment" class="sr" aria-hidden="true" tabindex="-1">
+
+<script>
+(function(){
+'use strict';
+
+/* ===== Configuration ===== */
+var API = 'https://api-845065078972.asia-southeast1.run.app/PM2/';
+var GRAPH_URL = 'https://kgraph.sg/polyglot/?drug=';
+var PLANTNET = 'https://my-api.plantnet.org/v2/';
+var PLANTNET_DEFAULT_KEY = '';      // optional: put a domain-restricted Pl@ntNet key here when deploying
+var PLANTNET_DEFAULT_PROJECT = 'all';
+
+/* ===== Small helpers ===== */
+var $ = function(s, el){ return (el||document).querySelector(s); };
+var view = $('#view');
+function esc(s){ return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+function safeUrl(u){ u = String(u||'').trim(); return /^https?:\/\//i.test(u) ? u : ''; }
+function store(k, v){ try{ if(v === undefined) return localStorage.getItem(k); if(v === null) localStorage.removeItem(k); else localStorage.setItem(k, v); }catch(e){ return null; } }
+function arr(v){ if(v == null || v === '') return []; return Array.isArray(v) ? v : [v]; }
+function splitList(s, re){ return String(s||'').split(re).map(function(x){return x.trim();}).filter(function(x){ return x && !/^[-–—_.?]+$/.test(x); }); }
+function uniq(a){ var s = {}; return a.filter(function(x){ var k = String(x).toLowerCase(); if(s[k]) return false; s[k] = 1; return true; }); }
+var CHEV = '<svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#55625B" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>';
+var BACK = '<button class="iconbtn plain" onclick="history.back()" aria-label="Back"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#16201B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button>';
+
+var cache = {};
+function getJSON(url){
+  if(cache[url]) return cache[url];
+  var p = fetch(url).then(function(r){ if(!r.ok) throw new Error('HTTP ' + r.status); return r.json(); });
+  cache[url] = p; p.catch(function(){ delete cache[url]; });
+  return p;
+}
+
+/* ===== Polyglot vocabulary ===== */
+var LANG = {CMN:'Chinese',ZHO:'Chinese',ENG:'English',HIN:'Hindi',KAN:'Kannada',MAL:'Malayalam',MAR:'Marathi',TAM:'Tamil',TEL:'Telugu',URD:'Urdu',SAN:'Sanskrit',PER:'Persian',FAS:'Persian',ARA:'Arabic',TIB:'Tibetan',BOD:'Tibetan',MSA:'Malay (Straits Chinese)',MALAY:'Malay',BEN:'Bengali',GUJ:'Gujarati',ORI:'Odia',PAN:'Punjabi'};
+var LANG_ORDER = ['Chinese','Malay','Malay (Straits Chinese)','Sanskrit','Tamil','Hindi','Malayalam','Kannada','Telugu','Marathi','Urdu','Persian','Arabic','Tibetan','English'];
+// id prefix → group. Longer prefixes first.
+var PREFIX = [
+  ['SNIN','Scientific name'],['SCDN','Straits Chinese'],['HDN','Homonym'],['RDN','Repeated name'],
+  ['CDN','Chinese'],['MDN','Malay'],['ENG','English'],['HIN','Hindi'],['KAN','Kannada'],['MAL','Malayalam'],
+  ['MAR','Marathi'],['TAM','Tamil'],['TEL','Telugu'],['URD','Urdu'],['SAN','Sanskrit'],['PER','Persian'],
+  ['ARA','Arabic'],['TIB','Tibetan'],['PS','Source text'],['Auth','Author']
+];
+function groupOf(id){
+  id = String(id||'');
+  for(var i=0;i<PREFIX.length;i++){ if(id.indexOf(PREFIX[i][0]) === 0) return PREFIX[i][1]; }
+  if(/^[A-Z][a-z]+ [a-z]/.test(id)) return 'Scientific name';
+  return 'Other';
+}
+function langOf(n){
+  var L = n.Language || n.collection || '';
+  var key = String(L).toUpperCase();
+  return LANG[key] || L || groupOf(n.id);
+}
+function cleanLabel(l){ return String(l||'').replace(/\s*\((Homonyms|Repeated Names)\)\s*$/,''); }
+function tagFor(group){
+  if(group === 'Homonym') return '<span class="tag warn">Homonym</span>';
+  if(group === 'Repeated name') return '<span class="tag warn">Repeated name</span>';
+  if(group === 'Scientific name') return '<span class="tag grey">Scientific</span>';
+  return '<span class="tag">' + esc(group) + '</span>';
+}
+
+/* ===== API parsing: arrays of node objects and edge objects ===== */
+function parseGraph(a){
+  var nodes = [], byEl = {}, edges = [];
+  (a||[]).forEach(function(o){
+    if(o.start_node !== undefined){ edges.push(o); return; }
+    if(byEl[o.element_id]) return;
+    byEl[o.element_id] = o; nodes.push(o);
+  });
+  return {nodes:nodes, edges:edges, byEl:byEl};
+}
+function nodeUrl(id){ return API + '0/' + encodeURIComponent(id) + '/_'; }
+function linkTo(id){ return '#n=' + encodeURIComponent(id); }
+
+/* ===== Router ===== */
+function route(){
+  var h = location.hash.replace(/^#/, '');
+  var tab = 'search';
+  window.scrollTo(0,0);
+  $('#chips').hidden = true;
+  if(h === 'scan'){ tab = 'scan'; renderScan(); }
+  else if(h === 'about'){ tab = 'about'; renderAbout(); }
+  else if(h.indexOf('n=') === 0){ renderNode(decodeURIComponent(h.slice(2))); }
+  else if(h.indexOf('q=') === 0){ var q = decodeURIComponent(h.slice(2)); $('#q').value = q; renderSearch(q); }
+  else { renderHome(); }
+  $('#tabSearch').setAttribute('aria-current', tab === 'search' ? 'page' : 'false');
+  $('#tabScan').setAttribute('aria-current', tab === 'scan' ? 'page' : 'false');
+  $('#tabAbout').setAttribute('aria-current', tab === 'about' ? 'page' : 'false');
+}
+window.addEventListener('hashchange', route);
+view.addEventListener('click', function(e){
+  var b = e.target.closest('.morebtn'); if(!b) return;
+  Array.prototype.forEach.call(b.parentNode.querySelectorAll('[hidden]'), function(x){ x.hidden = false; });
+  b.remove();
+});
+window.addEventListener('scroll', function(){ $('#top').classList.toggle('scrolled', window.scrollY > 4); }, {passive:true});
+$('#searchForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  var q = $('#q').value.trim(); if(!q) return;
+  $('#q').blur();
+  location.hash = 'q=' + encodeURIComponent(q);
+});
+
+/* ===== Home ===== */
+function renderHome(){
+  var recent = [];
+  try{ recent = JSON.parse(store('pg_recent') || '[]'); }catch(e){}
+  var ex = ['halia','生姜','kunyit','ginger','Curcuma longa','lengkuas'];
+  view.innerHTML =
+    '<div class="meta">Try a name in any language, or a scientific name</div>' +
+    '<div class="tags" style="margin:0 0 18px">' + ex.map(function(x){ return '<a class="pill" href="#q=' + encodeURIComponent(x) + '">' + esc(x) + '</a>'; }).join('') + '</div>' +
+    (recent.length ? '<section class="blk"><h3>Recently viewed</h3><div class="list">' + recent.map(function(r){
+      return '<a class="card" href="' + linkTo(r.id) + '"><div class="row1"><span class="name">' + esc(r.label) + '</span>' + tagFor(r.group) + '</div>' + (r.sub ? '<div class="sub">' + esc(r.sub) + '</div>' : '') + '</a>';
+    }).join('') + '</div></section>' : '') +
+    '<a class="card" href="#scan" style="display:flex;gap:14px;align-items:center;margin-top:6px"><span class="scanbtn" aria-hidden="true" style="width:44px;height:44px"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8V6a2 2 0 0 1 2-2h2M16 4h2a2 2 0 0 1 2 2v2M20 16v2a2 2 0 0 1-2 2h-2M8 20H6a2 2 0 0 1-2-2v-2"/><circle cx="12" cy="12" r="3.5"/></svg></span><span><span class="name" style="font-size:16px;font-weight:600;display:block">Scan a plant</span><span class="note">Photograph a leaf or flower and get a best guess</span></span></a>';
+}
+function remember(rec){
+  var list = [];
+  try{ list = JSON.parse(store('pg_recent') || '[]'); }catch(e){}
+  list = [rec].concat(list.filter(function(r){ return r.id !== rec.id; })).slice(0, 8);
+  store('pg_recent', JSON.stringify(list));
+}
+
+/* ===== Search ===== */
+var lastResults = [], activeFilter = 'All';
+function renderSearch(q){
+  view.innerHTML = '<div class="spin" role="status" aria-label="Searching"></div>';
+  var enc = encodeURIComponent(q);
+  Promise.all([
+    getJSON(API + 'searchKeywordH/DrugIndex/' + enc).catch(function(){ return []; }),
+    getJSON(API + 'searchKeyword/MiscIndex/' + enc).catch(function(){ return []; })
+  ]).then(function(res){
+    var seen = {}, out = [];
+    res[0].concat(res[1]).forEach(function(r){
+      var id = r['node.id'], label = r['node.label'];
+      if(!id || seen[id]) return; seen[id] = 1;
+      out.push({id:id, label:label, group:groupOf(id)});
+    });
+    // Exact matches first, then main entries before alternative names (ids with a ".nnn" suffix)
+    var lq = q.toLowerCase();
+    out.forEach(function(r, i){ r.i = i; r.exact = cleanLabel(r.label).toLowerCase() === lq ? 0 : 1; r.alt = /\.\d+$/.test(r.id) ? 1 : 0; });
+    out.sort(function(a, b){ return a.exact - b.exact || a.alt - b.alt || a.i - b.i; });
+    lastResults = out;
+    activeFilter = 'All';
+    drawResults(q);
+  }).catch(function(e){
+    view.innerHTML = '<div class="err">Could not reach the Polyglot database. Check your connection and try again.</div>';
+  });
+}
+function drawResults(q){
+  var counts = {};
+  lastResults.forEach(function(r){ counts[r.group] = (counts[r.group]||0) + 1; });
+  var groups = Object.keys(counts).sort(function(a,b){
+    var ia = LANG_ORDER.indexOf(a), ib = LANG_ORDER.indexOf(b);
+    if(ia < 0) ia = 50; if(ib < 0) ib = 50;
+    return ia - ib || counts[b] - counts[a];
+  });
+  var chips = $('#chips');
+  if(lastResults.length){
+    chips.hidden = false;
+    chips.innerHTML = ['All'].concat(groups).map(function(g){
+      var n = g === 'All' ? lastResults.length : counts[g];
+      return '<button class="chip" aria-pressed="' + (g === activeFilter) + '" data-g="' + esc(g) + '">' + esc(g) + ' ' + n + '</button>';
+    }).join('');
+    chips.onclick = function(e){
+      var b = e.target.closest('.chip'); if(!b) return;
+      activeFilter = b.getAttribute('data-g'); drawResults(q);
+    };
+  }
+  var shown = lastResults.filter(function(r){ return activeFilter === 'All' || r.group === activeFilter; });
+  if(!lastResults.length){
+    view.innerHTML = '<div class="empty">No names match “' + esc(q) + '”.<br>Try another spelling, a shorter word, or the scientific name.</div>';
+    return;
+  }
+  var max = 150;
+  view.innerHTML = '<div class="meta">' + shown.length + ' match' + (shown.length === 1 ? '' : 'es') + ' for “' + esc(q) + '”</div>' +
+    '<div class="list">' + shown.slice(0, max).map(function(r){
+      var warn = r.group === 'Homonym' || r.group === 'Repeated name';
+      var note = r.group === 'Homonym' ? 'This name is used for more than one drug. Tap to compare.' :
+                 r.group === 'Repeated name' ? 'This name appears under more than one entry.' : '';
+      return '<a class="card' + (warn ? ' warn' : '') + '" href="' + linkTo(r.id) + '" data-id="' + esc(r.id) + '"><div class="row1"><span class="name' + (r.group === 'Scientific name' ? ' sci' : '') + '">' + esc(cleanLabel(r.label)) + '</span>' + tagFor(r.group) + '</div>' + (note ? '<div class="note">' + note + '</div>' : '<div class="note enrich"></div>') + '</a>';
+    }).join('') + '</div>' +
+    (shown.length > max ? '<div class="meta">Showing first ' + max + '. Refine your search to see more.</div>' : '');
+  enrichRows(shown.slice(0, 40));
+}
+// Fill in what each name points to (scientific name, or the main drug an alternative name belongs to),
+// so that several identical labels can be told apart. Only the first rows, and cached.
+function enrichRows(rows){
+  rows.forEach(function(r){
+    if(r.group === 'Homonym' || r.group === 'Repeated name' || r.group === 'Source text') return;
+    getJSON(nodeUrl(r.id)).then(function(a){
+      var g = parseGraph(a);
+      var root = g.nodes.filter(function(n){ return n.id === r.id; })[0] || g.nodes[0];
+      if(!root) return;
+      var txt = '';
+      if(root.type === 'Alt_Drug_Name'){
+        var main = g.nodes.filter(function(n){ return n.type === 'Main_Drug'; })[0];
+        var sci = main ? sciNames(main)[0] : '';
+        txt = 'Alternative name for ' + esc(root.Main_Drug_Name || (main && main.label) || '?') + (sci ? ' · <span class="sci">' + esc(sci) + '</span>' : '');
+      } else if(root.type === 'Main_Drug'){
+        var s = sciNames(root);
+        var pin = root.Drug_Name_pinyin ? esc(root.Drug_Name_pinyin) + ' · ' : '';
+        if(s.length) txt = pin + '<span class="sci">' + esc(s.join(', ')) + '</span>';
+        else if(pin) txt = pin.replace(/ · $/, '');
+      } else if(root.type === 'Scientific_Name' && root.count_drugs){
+        txt = esc(root.count_drugs) + ' drug names';
+      }
+      if(!txt) return;
+      var el = view.querySelector('a[data-id="' + (window.CSS && CSS.escape ? CSS.escape(r.id) : r.id) + '"] .enrich');
+      if(el) el.innerHTML = txt;
+    }).catch(function(){});
+  });
+}
+
+/* ===== Node page ===== */
+function renderNode(id){
+  view.innerHTML = '<div class="back">' + BACK + '</div><div class="spin" role="status" aria-label="Loading"></div>';
+  getJSON(nodeUrl(id)).then(function(a){
+    if(!a || !a.length){ view.innerHTML = '<div class="back">' + BACK + '</div><div class="empty">No record found for ' + esc(id) + '.</div>'; return; }
+    var g = parseGraph(a);
+    var root = g.nodes.filter(function(n){ return n.id === id; })[0] || g.nodes[0];
+    var others = g.nodes.filter(function(n){ return n !== root; });
+    var t = root.type;
+    var html;
+    if(t === 'Main_Drug') html = drugPage(root, others);
+    else if(t === 'Scientific_Name') html = sciPage(root, others);
+    else if(t === 'Alt_Drug_Name') html = altPage(root, others);
+    else if(t === 'Homonym' || t === 'Repeated_Name') html = homPage(root, others);
+    else html = genericPage(root, others);
+    view.innerHTML = '<div class="back">' + BACK + '</div>' + html;
+    remember({id:root.id, label:cleanLabel(root.label), group:t === 'Main_Drug' ? langOf(root) : groupOf(root.id), sub:sciNames(root).join(', ')});
+    if(t === 'Main_Drug') loadCrossTraditions(root, others);
+  }).catch(function(){
+    view.innerHTML = '<div class="back">' + BACK + '</div><div class="err">Could not load this record. Check your connection and try again.</div>';
+  });
+}
+function sciNames(n){ return arr(n.Scientific_Name).map(String).filter(Boolean); }
+function extLinks(nodes){
+  var names = {GBIF_link:'GBIF',POWO_link:'POWO',Kew_link:'Kew MPNS',HERB_ac_cn_link:'HERB',TCMIO_link:'TCMIO',TCMSP_link:'TCMSP',TCMIP_link:'ETCM',American_Dragon_link:'Am. Dragon',ZYSJ_link:'中医世家'};
+  var seen = {}, out = [];
+  nodes.forEach(function(n){
+    Object.keys(n).forEach(function(k){
+      if(!/_link$/.test(k)) return;
+      var u = safeUrl(n[k]); if(!u || seen[u]) return; seen[u] = 1;
+      out.push('<a href="' + esc(u) + '" target="_blank" rel="noopener">' + esc(names[k] || k.replace(/_link$/,'').replace(/_/g,' ')) + '</a>');
+    });
+  });
+  return out.length ? '<section class="blk"><h3>External records</h3><div class="links">' + out.join('') + '</div></section>' : '';
+}
+function sourcesBlock(provs, dataSource){
+  var html = provs.map(function(p){
+    var title = p.Provenance_Title_HZTraditional || p.label;
+    var py = p.Provenance_Title_PY ? ' <span style="font-weight:400;font-size:13px;color:var(--muted)">' + esc(p.Provenance_Title_PY) + '</span>' : '';
+    var when = [p.PriSrcDynasty_PY, p.Author_Name].filter(Boolean).join(' · ');
+    var range = (p.Provenance_Beginning_Date_Range || p.Provenance_End_Date_Range) ? ' (' + esc(p.Provenance_Beginning_Date_Range||'?') + ' – ' + esc(p.Provenance_End_Date_Range||'?') + ')' : '';
+    return '<div class="src"><b>' + esc(title) + '</b>' + py + (when || range ? '<div>' + esc(when) + range + '</div>' : '') + '</div>';
+  }).join('');
+  var ds = splitList(dataSource, /,(?![^《]*》)|;/);
+  if(ds.length) html += '<div class="src"><b>Data sources</b><div>' + ds.map(esc).join(' · ') + '</div></div>';
+  return html ? '<section class="blk"><h3>Sources</h3>' + html + '</section>' : '';
+}
+function regionsOf(root, others){
+  var r = [];
+  others.filter(function(n){ return n.type === 'Region' || n.type === 'Region_Language'; }).forEach(function(n){
+    r.push(n.Region_en && n.Region_cn && n.Region_en !== n.Region_cn ? n.Region_cn + ' ' + n.Region_en : (n.Region_en || n.Region_Language_en || n.label));
+  });
+  if(!r.length) r = splitList(root.Region_Language_en || root.Region_en, /[;,]/);
+  return uniq(r);
+}
+function drugPage(root, others){
+  var lang = langOf(root);
+  var trad = root.Drug_Name_traditional && root.Drug_Name_traditional !== root.label ? root.Drug_Name_traditional : '';
+  var pin = root.Drug_Name_pinyin || '';
+  var sciNodes = others.filter(function(n){ return n.type === 'Scientific_Name'; });
+  var sciHtml = sciNodes.length ? sciNodes.map(function(s){ return '<a class="sci" href="' + linkTo(s.id) + '">' + esc(s.label) + '</a>'; }).join(', ')
+                                : sciNames(root).map(function(s){ return '<span class="sci">' + esc(s) + '</span>'; }).join(', ');
+  var tags = ['<span class="tag">' + esc(lang) + ' · ' + esc(root.id) + '</span>'];
+  if(root.Plant_Part_en) tags.push('<span class="tag grey">' + esc(root.Plant_Part_en) + (root.Plant_Part_cn ? ' ' + esc(root.Plant_Part_cn) : '') + '</span>');
+  if(root.Organism) tags.push('<span class="tag grey">' + esc(root.Organism) + '</span>');
+  if(root.Name_Status) tags.push('<span class="tag grey">' + esc(root.Name_Status) + '</span>');
+  sciNodes.forEach(function(s){ if(s.count_drugs) tags.push('<span class="tag grey">' + esc(s.count_drugs) + ' names linked to this species</span>'); });
+
+  var eng = uniq(splitList(root.English_Name, /;/).concat(others.filter(function(n){ return n.type === 'English_Name'; }).map(function(n){ return n.label; }))).filter(function(x){ return x && !/^[-–—_.?]+$/.test(String(x).trim()); });
+  var alts = others.filter(function(n){ return n.type === 'Alt_Drug_Name'; });
+  var uses = splitList(root.Medical_Uses, /\s\/\s|;/);
+  var provs = others.filter(function(n){ return n.type === 'Provenance'; });
+  var regions = regionsOf(root, others);
+  var parts = others.filter(function(n){ return n.type === 'Plant_Part'; }).map(function(n){ return n.Plant_Part_en || n.label; });
+  var related = others.filter(function(n){ return n.type === 'Homonym' || n.type === 'Repeated_Name' || n.type === 'Main_Drug'; });
+
+  var h = '<div class="hero"><h2>' + esc(root.label) + '</h2>' +
+    (trad || pin ? '<div class="alt">' + esc([trad, pin].filter(Boolean).join(' · ')) + '</div>' : '') +
+    (sciHtml ? '<div class="sciline">' + sciHtml + '</div>' : '') +
+    (root.Pharmaceutical_Name ? '<div class="alt" style="margin-top:4px">' + esc(root.Pharmaceutical_Name) + '</div>' : '') +
+    '<div class="tags">' + tags.join('') + '</div></div>';
+
+  if(sciNodes.length) h += '<section class="blk" id="xtrad"><h3>Same plant, other traditions</h3><div class="spin" role="status" aria-label="Loading other traditions"></div></section>';
+  if(eng.length) h += '<section class="blk"><h3>English names</h3><div class="tags" style="margin:0">' + eng.map(function(e){ return '<span class="pill">' + esc(e) + '</span>'; }).join('') + '</div></section>';
+  if(alts.length) h += '<section class="blk"><h3>Alternative names (' + alts.length + ')</h3><div class="tags" style="margin:0">' + alts.map(function(a){
+      var extra = a.Alt_Name_pinyin ? ' <span style="color:var(--muted);font-size:12.5px">' + esc(a.Alt_Name_pinyin) + '</span>' : '';
+      return '<a class="pill" href="' + linkTo(a.id) + '">' + esc(a.label) + extra + '</a>';
+    }).join('') + '</div></section>';
+  if(uses.length) h += collapsibleChips('Medical uses' + (lang === 'Malay' ? ' (Malay sources)' : ''), uses, 10);
+  if(parts.length) h += '<section class="blk"><h3>Part used</h3><div class="prose">' + esc(uniq(parts).join(', ')) + '</div></section>';
+  h += sourcesBlock(provs, root.Data_Source);
+  if(regions.length) h += '<section class="blk"><h3>Regions</h3><div class="prose">' + esc(regions.join(' · ')) + '</div></section>';
+  if(related.length) h += relatedBlock('Related entries', related);
+  h += extLinks([root].concat(sciNodes));
+  h += '<section class="blk stack"><a class="btn ghost" href="' + esc(GRAPH_URL + encodeURIComponent(root.id)) + '" target="_blank" rel="noopener">Open network graph &amp; map (full site)</a></section>';
+  return h;
+}
+function collapsibleChips(title, items, n){
+  var rest = items.length - n;
+  return '<section class="blk"><h3>' + esc(title) + '</h3><div class="tags" style="margin:0">' +
+    items.map(function(u, i){ return '<span class="pill"' + (i >= n ? ' hidden' : '') + '>' + esc(u) + '</span>'; }).join('') +
+    (rest > 0 ? '<button class="chip morebtn" style="height:34px;border-color:var(--accent);color:var(--accent);font-weight:600">+' + rest + ' more</button>' : '') +
+    '</div></section>';
+}
+function relatedBlock(title, nodes){
+  return '<section class="blk"><h3>' + esc(title) + '</h3><div class="list">' + nodes.map(function(n){
+    var group = n.type === 'Main_Drug' ? langOf(n) : groupOf(n.id);
+    var sub = sciNames(n).join(', ');
+    var warn = n.type === 'Homonym' || n.type === 'Repeated_Name';
+    return '<a class="card' + (warn ? ' warn' : '') + '" href="' + linkTo(n.id) + '"><div class="row1"><span class="name">' + esc(cleanLabel(n.label)) + '</span>' + tagFor(group) + '</div>' +
+      (sub ? '<div class="sub sci">' + esc(sub) + '</div>' : '') +
+      (n.Main_Drug_Name ? '<div class="note">Alternative name for ' + esc(n.Main_Drug_Name) + '</div>' : '') + '</a>';
+  }).join('') + '</div></section>';
+}
+function namesByLanguage(drugs, excludeId){
+  var by = {};
+  drugs.forEach(function(d){
+    if(d.id === excludeId) return;
+    var L = langOf(d); (by[L] = by[L] || []).push(d);
+  });
+  var langs = Object.keys(by).sort(function(a,b){
+    var ia = LANG_ORDER.indexOf(a), ib = LANG_ORDER.indexOf(b); if(ia < 0) ia = 50; if(ib < 0) ib = 50; return ia - ib;
+  });
+  if(!langs.length) return '<div class="small">No other traditions recorded for this species yet.</div>';
+  return '<div class="box">' + langs.map(function(L, i){
+    var items = by[L];
+    return '<details' + (i < 2 ? ' open' : '') + '><summary><span class="l">' + esc(L) + '</span><span class="r">' + items.length + ' ' + (items.length === 1 ? 'name' : 'names') + CHEV + '</span></summary><div class="inner">' +
+      items.map(function(d){
+        var extra = d.Drug_Name_pinyin ? ' <span style="color:var(--muted);font-size:12.5px">' + esc(d.Drug_Name_pinyin) + '</span>' : '';
+        return '<a class="pill" href="' + linkTo(d.id) + '">' + esc(d.label) + extra + '</a>';
+      }).join('') + '</div></details>';
+  }).join('') + '</div>';
+}
+function loadCrossTraditions(root, others){
+  var sciNodes = others.filter(function(n){ return n.type === 'Scientific_Name' && n.id; });
+  var box = $('#xtrad'); if(!box) return;
+  Promise.all(sciNodes.map(function(s){ return getJSON(nodeUrl(s.id)).then(function(a){ return {s:s, g:parseGraph(a)}; }); })).then(function(list){
+    var html = list.map(function(x){
+      var drugs = x.g.nodes.filter(function(n){ return n.type === 'Main_Drug'; });
+      return (list.length > 1 ? '<div class="small sci" style="margin:6px 0">' + esc(x.s.label) + '</div>' : '') + namesByLanguage(drugs, root.id);
+    }).join('');
+    if($('#xtrad')) $('#xtrad').innerHTML = '<h3>Same plant, other traditions</h3>' + html;
+  }).catch(function(){
+    if($('#xtrad')) $('#xtrad').innerHTML = '<h3>Same plant, other traditions</h3><div class="small">Could not load other traditions.</div>';
+  });
+}
+function sciPage(root, others){
+  var drugs = others.filter(function(n){ return n.type === 'Main_Drug'; });
+  var syn = splitList(root.botanical_synonym, /;/);
+  var h = '<div class="hero"><h2 class="sci" style="font-size:26px">' + esc(root.label) + '</h2>' +
+    '<div class="tags"><span class="tag grey">Scientific name · ' + esc(root.id) + '</span>' +
+    (drugs.length ? '<span class="tag">' + drugs.length + ' drug names</span>' : '') + '</div></div>';
+  h += '<section class="blk"><h3>Names across traditions</h3>' + namesByLanguage(drugs, null) + '</section>';
+  if(syn.length) h += '<section class="blk"><h3>Botanical synonyms</h3><div class="box"><details><summary><span class="l">' + syn.length + ' synonyms</span><span class="r">' + CHEV + '</span></summary><div class="inner">' +
+    syn.map(function(s){ return '<span class="pill sci">' + esc(s) + '</span>'; }).join('') + '</div></details></div></section>';
+  h += extLinks([root]);
+  return h;
+}
+function altPage(root, others){
+  var main = others.filter(function(n){ return n.type === 'Main_Drug'; });
+  var provs = others.filter(function(n){ return n.type === 'Provenance'; });
+  var homs = others.filter(function(n){ return n.type === 'Homonym' || n.type === 'Repeated_Name'; });
+  var regions = regionsOf(root, others);
+  var h = '<div class="hero"><h2>' + esc(root.label) + '</h2>' +
+    (root.Alt_Name_traditional && root.Alt_Name_traditional !== root.label || root.Alt_Name_pinyin ? '<div class="alt">' + esc([root.Alt_Name_traditional !== root.label ? root.Alt_Name_traditional : '', root.Alt_Name_pinyin].filter(Boolean).join(' · ')) + '</div>' : '') +
+    '<div class="tags"><span class="tag">' + esc(langOf(root)) + ' · alternative name</span></div></div>';
+  if(main.length) h += relatedBlock('Alternative name for', main);
+  h += sourcesBlock(provs, root.Data_Source);
+  if(regions.length) h += '<section class="blk"><h3>Regions</h3><div class="prose">' + esc(regions.join(' · ')) + '</div></section>';
+  if(homs.length) h += relatedBlock('Also used for other drugs', homs);
+  return h;
+}
+function homPage(root, others){
+  var isHom = root.type === 'Homonym';
+  var h = '<div class="hero"><h2>' + esc(root.common_name || cleanLabel(root.label)) + '</h2>' +
+    '<div class="tags"><span class="tag warn">' + (isHom ? 'Homonym' : 'Repeated name') + '</span></div></div>' +
+    '<div class="err" style="margin-bottom:16px">' + (isHom ? 'This name refers to more than one drug. Check the source and scientific name before relying on it.' : 'This name appears under more than one entry in the database.') + '</div>';
+  var main = others.filter(function(n){ return n.type === 'Main_Drug'; });
+  var alt = others.filter(function(n){ return n.type === 'Alt_Drug_Name'; });
+  if(main.length) h += relatedBlock('As a main drug name', main);
+  if(alt.length) h += relatedBlock('As an alternative name', alt);
+  return h;
+}
+function genericPage(root, others){
+  var skip = {element_id:1,supertype:1,parentID:1,type:1,label:1};
+  var rows = Object.keys(root).filter(function(k){ return !skip[k] && root[k] !== '' && root[k] != null && !/_link$/.test(k); }).map(function(k){
+    return '<div class="src"><b>' + esc(k.replace(/_/g,' ')) + '</b><div>' + esc(arr(root[k]).join(', ')) + '</div></div>';
+  }).join('');
+  var h = '<div class="hero"><h2>' + esc(cleanLabel(root.label)) + '</h2><div class="tags"><span class="tag grey">' + esc(String(root.type||'').replace(/_/g,' ')) + '</span></div></div>';
+  if(rows) h += '<section class="blk"><h3>Details</h3>' + rows + '</section>';
+  var linked = others.filter(function(n){ return n.id; });
+  if(linked.length) h += relatedBlock('Linked entries (' + linked.length + ')', linked.slice(0, 200));
+  h += extLinks([root]);
+  return h;
+}
+
+/* ===== About ===== */
+function renderAbout(){
+  view.innerHTML = '<div class="hero"><h2 style="font-size:24px">About</h2></div>' +
+    '<div class="prose" style="margin-bottom:14px">Polyglot Medicine links the names of traditional drugs across Chinese, Malay, South Asian and other medical languages, with their scientific names, source texts and regions.</div>' +
+    '<div class="prose" style="margin-bottom:18px">This is the phone interface. The full network graph and map remain on the <a href="https://kgraph.sg/polyglot/" target="_blank" rel="noopener">desktop site</a>.</div>' +
+    '<section class="blk"><h3>Plant scanning</h3><div class="prose small">The image-based plant species identification service used, is based on the Pl@ntNet recognition API, regularly updated and accessible through the site <a href="https://my.plantnet.org/" target="_blank" rel="noopener">https://my.plantnet.org/</a>. Scan results are suggestions only.</div></section>';
+}
+
+/* ===== Scan ===== */
+var photos = []; // {blob, url, organ}
+var ORGANS = [['auto','Auto'],['leaf','Leaf'],['flower','Flower'],['fruit','Fruit'],['bark','Bark']];
+function getKey(){ return store('pg_plantnet_key') || PLANTNET_DEFAULT_KEY; }
+function getProject(){ return store('pg_plantnet_project') || PLANTNET_DEFAULT_PROJECT; }
+
+function renderScan(){
+  var key = getKey();
+  var h = '<div class="hero" style="padding-bottom:8px"><h2 style="font-size:24px">Scan a plant</h2><div class="alt">Up to 5 photos of the same plant. Close-ups of a leaf, flower or fruit work best.</div></div>';
+  if(!key) h += '<div class="err" style="margin-bottom:14px">Scanning needs a Pl@ntNet API key. <button class="chip" style="height:34px;margin-top:8px;display:block" id="openSet">Add key</button></div>';
+  h += '<div class="photos" id="photos"></div>' +
+    '<div class="small" style="margin:10px 0 14px">Flora: <b id="projLbl">' + esc(getProject()) + '</b> · <button class="chip" style="height:30px;padding:0 10px;font-size:12.5px" id="chgProj">Change</button></div>' +
+    '<button class="btn" id="idBtn"' + (photos.length && key ? '' : ' disabled') + '>Identify</button>' +
+    '<div id="scanOut" style="margin-top:18px"></div>';
+  view.innerHTML = h;
+  drawPhotos();
+  var o = $('#openSet'); if(o) o.onclick = openSettings;
+  $('#chgProj').onclick = openSettings;
+  $('#idBtn').onclick = identify;
+}
+function drawPhotos(){
+  var el = $('#photos'); if(!el) return;
+  el.innerHTML = photos.map(function(p, i){
+    return '<div class="ph"><img src="' + p.url + '" alt="Photo ' + (i+1) + '"><button class="x" data-i="' + i + '" aria-label="Remove photo ' + (i+1) + '">×</button>' +
+      '<label class="sr" for="org' + i + '">Plant part for photo ' + (i+1) + '</label><select id="org' + i + '" data-i="' + i + '">' + ORGANS.map(function(o){ return '<option value="' + o[0] + '"' + (o[0] === p.organ ? ' selected' : '') + '>' + o[1] + '</option>'; }).join('') + '</select></div>';
+  }).join('') + (photos.length < 5 ? '<button class="addph" id="addPh"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#55625B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8a2 2 0 0 1 2-2h2l2-2h6l2 2h2a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><circle cx="12" cy="13" r="3.5"/></svg>' + (photos.length ? 'Add another' : 'Take or choose photo') + '</button>' : '');
+  el.onclick = function(e){
+    var x = e.target.closest('.x');
+    if(x){ var i = +x.getAttribute('data-i'); URL.revokeObjectURL(photos[i].url); photos.splice(i,1); renderScan(); return; }
+    if(e.target.closest('#addPh')) $('#fileIn').click();
+  };
+  el.onchange = function(e){ if(e.target.tagName === 'SELECT') photos[+e.target.getAttribute('data-i')].organ = e.target.value; };
+}
+$('#fileIn').addEventListener('change', function(e){
+  var f = e.target.files && e.target.files[0]; e.target.value = '';
+  if(!f) return;
+  shrink(f).then(function(blob){
+    photos.push({blob:blob, url:URL.createObjectURL(blob), organ:'auto'});
+    renderScan();
+  }).catch(function(){
+    photos.push({blob:f, url:URL.createObjectURL(f), organ:'auto'});
+    renderScan();
+  });
+});
+function shrink(file){
+  return new Promise(function(resolve, reject){
+    var img = new Image(), u = URL.createObjectURL(file);
+    var timer = setTimeout(function(){ reject(); }, 4000);
+    img.onload = function(){
+      var m = 1280, w = img.naturalWidth, h = img.naturalHeight, s = Math.min(1, m / Math.max(w, h));
+      var c = document.createElement('canvas'); c.width = Math.round(w*s); c.height = Math.round(h*s);
+      c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+      clearTimeout(timer); URL.revokeObjectURL(u);
+      c.toBlob(function(b){ b ? resolve(b) : reject(); }, 'image/jpeg', 0.85);
+    };
+    img.onerror = function(){ URL.revokeObjectURL(u); reject(); };
+    img.src = u;
+  });
+}
+function identify(){
+  var key = getKey(); if(!key || !photos.length) return;
+  var out = $('#scanOut'), btn = $('#idBtn');
+  btn.disabled = true; btn.textContent = 'Identifying…';
+  out.innerHTML = '<div class="spin" role="status" aria-label="Identifying"></div>';
+  var fd = new FormData();
+  photos.forEach(function(p, i){ fd.append('images', p.blob, 'photo' + i + '.jpg'); fd.append('organs', p.organ); });
+  var url = PLANTNET + 'identify/' + encodeURIComponent(getProject()) + '?api-key=' + encodeURIComponent(key) + '&lang=en&nb-results=5&include-related-images=false';
+  fetch(url, {method:'POST', body:fd}).then(function(r){
+    return r.json().catch(function(){ return {}; }).then(function(j){ return {status:r.status, j:j}; });
+  }).then(function(x){
+    btn.disabled = false; btn.textContent = 'Identify again';
+    if(x.status === 404){ out.innerHTML = '<div class="err">No species recognised. Try a closer, sharper photo of a single leaf or flower.</div>'; return; }
+    if(x.status === 401 || x.status === 403){ out.innerHTML = '<div class="err">The Pl@ntNet key was rejected. Check the key, and that this site’s domain is authorised for it.</div>'; return; }
+    if(x.status === 429){ out.innerHTML = '<div class="err">Today’s free identification quota is used up. Try again tomorrow.</div>'; return; }
+    if(x.status !== 200 || !x.j.results){ out.innerHTML = '<div class="err">Identification failed (' + esc(x.status) + (x.j && x.j.message ? ': ' + esc(x.j.message) : '') + ').</div>'; return; }
+    drawScanResults(x.j);
+  }).catch(function(){
+    btn.disabled = false; btn.textContent = 'Identify';
+    out.innerHTML = '<div class="err">Could not reach Pl@ntNet. Check your connection and try again.</div>';
+  });
+}
+function drawScanResults(j){
+  var res = (j.results || []).slice(0, 5);
+  var out = $('#scanOut');
+  out.innerHTML = '<section class="blk"><h3>Best guesses</h3><div class="list">' + res.map(function(r, i){
+    var sp = r.species || {};
+    var name = sp.scientificNameWithoutAuthor || sp.scientificName || '';
+    var pct = Math.round((r.score || 0) * 100);
+    var common = (sp.commonNames || []).slice(0, 4).join(' · ');
+    var fam = sp.family && (sp.family.scientificNameWithoutAuthor || sp.family.scientificName);
+    var links = [];
+    if(r.gbif && r.gbif.id) links.push('<a href="https://www.gbif.org/species/' + encodeURIComponent(r.gbif.id) + '" target="_blank" rel="noopener">GBIF</a>');
+    if(r.powo && r.powo.id) links.push('<a href="https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:' + encodeURIComponent(r.powo.id) + '" target="_blank" rel="noopener">POWO</a>');
+    return '<div class="card res' + (i === 0 ? ' top' : '') + '">' +
+      '<div class="row1"><span class="name sci">' + esc(name) + '</span><span class="tag' + (i === 0 ? '' : ' grey') + '">' + pct + '%</span></div>' +
+      '<div class="bar"><i style="width:' + Math.max(2, pct) + '%;' + (i === 0 ? '' : 'background:#7F8C85') + '"></i></div>' +
+      (common || fam ? '<div class="note">' + esc([common, fam].filter(Boolean).join(' — ')) + '</div>' : '') +
+      '<div class="note" id="pg' + i + '" style="margin-top:8px">Checking Polyglot…</div>' +
+      (links.length ? '<div class="small" style="margin-top:6px">' + links.join(' · ') + '</div>' : '') +
+      '</div>';
+  }).join('') + '</div></section>' +
+  '<div class="err" style="font-size:13px">AI suggestion only. Many medicinal plants look alike: confirm with a specimen or an expert before any use.</div>' +
+  '<p class="small" style="margin-top:12px">The image-based plant species identification service used, is based on the Pl@ntNet recognition API, regularly updated and accessible through the site <a href="https://my.plantnet.org/" target="_blank" rel="noopener">https://my.plantnet.org/</a></p>';
+  res.forEach(function(r, i){
+    var sp = r.species || {};
+    var name = sp.scientificNameWithoutAuthor || '';
+    matchPolyglot(name).then(function(m){
+      var el = $('#pg' + i); if(!el) return;
+      if(m) el.innerHTML = '<a href="' + linkTo(m.id) + '" style="font-weight:600">Open in Polyglot →</a> <span class="sci">' + esc(m.label) + '</span>';
+      else el.innerHTML = 'Not in Polyglot yet. <a href="#q=' + encodeURIComponent(name.split(' ')[0]) + '">Search the genus</a>';
+    });
+  });
+}
+function matchPolyglot(name){
+  if(!name) return Promise.resolve(null);
+  return getJSON(API + 'searchKeyword/MiscIndex/' + encodeURIComponent(name)).then(function(list){
+    var lc = name.toLowerCase();
+    var hit = (list || []).filter(function(r){
+      return String(r['node.id']).indexOf('SNIN') === 0 && String(r['node.label']).toLowerCase().indexOf(lc) === 0 &&
+             !/ (var|subsp|f)\. /.test(String(r['node.label']).slice(lc.length));
+    })[0] || (list || []).filter(function(r){ return String(r['node.id']).indexOf('SNIN') === 0 && String(r['node.label']).toLowerCase().indexOf(lc) === 0; })[0];
+    return hit ? {id:hit['node.id'], label:hit['node.label']} : null;
+  }).catch(function(){ return null; });
+}
+
+/* ===== Settings ===== */
+function openSettings(){
+  $('#keyIn').value = store('pg_plantnet_key') || '';
+  loadProjects();
+  var d = $('#settings');
+  if(d.showModal) d.showModal(); else d.setAttribute('open','');
+}
+function loadProjects(){
+  var key = $('#keyIn').value.trim() || getKey();
+  var sel = $('#projIn'), cur = getProject();
+  sel.innerHTML = '<option value="all">World flora (all)</option>';
+  sel.value = cur;
+  if(!key){ $('#projNote').textContent = 'Save a key to load regional floras.'; return; }
+  $('#projNote').textContent = 'Loading floras…';
+  fetch(PLANTNET + 'projects?api-key=' + encodeURIComponent(key) + '&lang=en').then(function(r){ if(!r.ok) throw 0; return r.json(); }).then(function(list){
+    var opts = (list || []).map(function(p){ return {id:p.id, title:p.title || p.id, n:p.speciesCount || p.species_count}; });
+    opts.sort(function(a,b){ var A = /malesia|malaysia|indo|asia|singapore/i.test(a.title + a.id) ? 0 : 1, B = /malesia|malaysia|indo|asia|singapore/i.test(b.title + b.id) ? 0 : 1; return A - B || a.title.localeCompare(b.title); });
+    sel.innerHTML = '<option value="all">World flora (all)</option>' + opts.filter(function(o){ return o.id !== 'all'; }).map(function(o){ return '<option value="' + esc(o.id) + '">' + esc(o.title) + (o.n ? ' (' + o.n + ')' : '') + '</option>'; }).join('');
+    sel.value = cur; if(sel.value !== cur) sel.value = 'all';
+    $('#projNote').textContent = 'Regional floras give more accurate results for local plants.';
+  }).catch(function(){ $('#projNote').textContent = 'Could not load floras with this key.'; });
+}
+$('#keyIn').addEventListener('change', loadProjects);
+$('#settingsBtn').addEventListener('click', openSettings);
+$('#settings').addEventListener('close', function(){
+  if($('#settings').returnValue !== 'save') return;
+  var k = $('#keyIn').value.trim();
+  store('pg_plantnet_key', k || null);
+  store('pg_plantnet_project', $('#projIn').value || 'all');
+  if(location.hash === '#scan') renderScan();
+});
+
+route();
+})();
+</script>
+</body>
+</html>
