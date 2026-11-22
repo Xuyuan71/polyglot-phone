@@ -44,6 +44,8 @@ jobs:
           curl -fsSL --retry 3 "https://static.wixstatic.com/media/589fdb_c5b4674b3f2b4dd0b91ed3579701fe54%7Emv2.png" -o src-icon.png
           python3 -m pip install --quiet pillow
           python3 scripts/make_icons.py src-icon.png _site/icons
+          curl -fsSL --retry 3 "https://static.wixstatic.com/media/501c0d_d43a9465ebf34ffea83401a058cd7474%7Emv2.png" -o leaf-white-src.png
+          python3 -c "from PIL import Image; im=Image.open('leaf-white-src.png').convert('RGBA'); im.thumbnail((120,120), Image.LANCZOS); im.save('_site/icons/leaf-white.png', optimize=True)"
           ls -l _site/icons
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3

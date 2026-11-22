@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#0F6E56">
+<meta name="theme-color" content="#000000">
 <title>Polyglot Asian Medicine</title>
 <meta name="application-name" content="Polyglot Asian Medicine">
 <meta name="apple-mobile-web-app-title" content="Polyglot">
@@ -14,16 +14,17 @@
 <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
 <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600;700&family=Noto+Sans+SC:wght@300;400;600&display=swap">
 <style>
 :root{
-  --ink:#16201B; --ink2:#3C4842; --muted:#55625B; --line:#DDE3DF; --soft:#EEF1EF; --bg:#FFFFFF; --panel:#F6F8F7;
-  --accent:#0F6E56; --accent-d:#0A4F3E; --accent-soft:#E3F1EC;
-  --warn-bg:#FFF8EC; --warn-line:#F0D9B5; --warn-ink:#5C4A2E; --warn-tag:#FBE7C6; --warn-tag-ink:#8A4B00;
-  --radius:14px;
+  /* Palette matched to polyglotasianmedicine.com: black ground, light grey type, pale green accent */
+  --ink:#F5F5F5; --ink2:#D6D6D6; --muted:#A3A3A3; --line:#2E2E2E; --soft:#1C1C1C; --bg:#000000; --panel:#141414;
+  --accent:#CEDE9C; --accent-d:#E4EEC4; --accent-soft:#1F2614;
+  --warn-bg:#241C10; --warn-line:#5C4A22; --warn-ink:#F0D9A8; --warn-tag:#3A2C12; --warn-tag-ink:#F2C879;
+  --radius:12px;
 }
 *{box-sizing:border-box}
-html,body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,"Noto Sans SC",system-ui,-apple-system,sans-serif;-webkit-text-size-adjust:100%}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:"Titillium Web","Noto Sans SC",system-ui,-apple-system,sans-serif;-webkit-text-size-adjust:100%}
 body{padding-bottom:calc(64px + env(safe-area-inset-bottom))}
 a{color:var(--accent);text-decoration:none}
 button{font:inherit;color:inherit}
@@ -31,8 +32,10 @@ button{font:inherit;color:inherit}
 header.top{position:sticky;top:0;z-index:5;background:var(--bg);padding:calc(12px + env(safe-area-inset-top)) 16px 10px;border-bottom:1px solid transparent}
 header.top.scrolled{border-bottom-color:var(--line)}
 .brand{display:flex;align-items:center;justify-content:space-between;gap:8px}
-.brand h1{margin:0;font-size:19px;font-weight:700;letter-spacing:-.2px}
-.brand p{margin:2px 0 0;font-size:12.5px;color:var(--muted)}
+.logo{display:flex;align-items:center;gap:10px;color:var(--ink);min-width:0}
+.logo img{flex:none;display:block}
+.brand h1{margin:0;font-size:19px;font-weight:300;letter-spacing:2px;line-height:1.2}
+.brand p{margin:3px 0 0;font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:1.4px}
 .iconbtn{width:44px;height:44px;border:1px solid var(--line);background:var(--bg);border-radius:12px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;flex:none}
 .iconbtn.plain{border:0}
 .searchrow{display:flex;gap:10px;margin-top:10px}
@@ -42,7 +45,7 @@ header.top.scrolled{border-bottom-color:var(--line)}
 .chips{display:flex;gap:8px;overflow-x:auto;padding:12px 16px 4px;scrollbar-width:none}
 .chips::-webkit-scrollbar{display:none}
 .chip{height:36px;padding:0 14px;border-radius:18px;border:1px solid var(--line);background:var(--bg);font-size:14px;white-space:nowrap;cursor:pointer;flex:none}
-.chip[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink);font-weight:600}
+.chip[aria-pressed="true"]{background:var(--accent);color:#000;border-color:var(--accent);font-weight:600}
 main{padding:4px 16px 24px}
 .meta{font-size:13px;color:var(--muted);padding:8px 0 6px}
 .list{display:flex;flex-direction:column;gap:10px}
@@ -53,17 +56,17 @@ main{padding:4px 16px 24px}
 .card .sub{font-size:14px;color:var(--ink2);margin-top:4px}
 .card .note{font-size:13px;color:var(--muted);margin-top:4px}
 .card.warn{background:var(--warn-bg);border-color:var(--warn-line)}
-.tag{font-size:12px;font-weight:600;color:var(--accent);background:var(--accent-soft);padding:3px 8px;border-radius:8px;white-space:nowrap;flex:none}
+.tag{font-size:12px;font-weight:600;letter-spacing:.2px;color:var(--accent);background:var(--accent-soft);padding:3px 8px;border-radius:8px;white-space:nowrap;flex:none}
 .tag.grey{color:var(--ink2);background:var(--soft);font-weight:500}
 .tag.warn{color:var(--warn-tag-ink);background:var(--warn-tag)}
 .sci{font-style:italic}
 .hero{padding:6px 0 14px}
-.hero h2{margin:0;font-size:30px;font-weight:700;letter-spacing:-.4px;overflow-wrap:anywhere}
+.hero h2{margin:0;font-size:30px;font-weight:600;letter-spacing:.2px;overflow-wrap:anywhere}
 .hero .alt{font-size:15px;color:var(--muted);margin-top:2px}
 .hero .sciline{font-size:16px;color:var(--ink2);margin-top:6px}
 .tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
 section.blk{padding:0 0 18px}
-section.blk>h3{margin:0 0 8px;font-size:12.5px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.6px}
+section.blk>h3{margin:0 0 8px;font-size:12px;font-weight:400;color:var(--accent);text-transform:uppercase;letter-spacing:1.4px}
 .box{border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
 .box details{border-top:1px solid var(--soft)}
 .box details:first-child{border-top:0}
@@ -81,7 +84,7 @@ a.pill{background:var(--accent-soft);color:var(--accent-d)}
 .prose{font-size:15px;line-height:1.5;color:var(--ink2)}
 .links{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
 .links a{min-height:44px;border:1px solid var(--line);border-radius:10px;display:flex;align-items:center;justify-content:center;text-align:center;font-size:13.5px;font-weight:600;padding:4px}
-.btn{height:52px;border-radius:var(--radius);border:0;background:var(--accent);color:#fff;font-size:16px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:8px;width:100%;cursor:pointer}
+.btn{height:52px;border-radius:var(--radius);border:0;background:var(--accent);color:#000;font-size:16px;font-weight:600;letter-spacing:.3px;display:flex;align-items:center;justify-content:center;gap:8px;width:100%;cursor:pointer}
 .btn.ghost{background:var(--bg);color:var(--ink);border:1px solid var(--line)}
 .btn[disabled]{opacity:.5}
 .stack{display:flex;flex-direction:column;gap:10px}
@@ -94,7 +97,7 @@ a.pill{background:var(--accent-soft);color:var(--accent-d)}
 .photos{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
 .ph{position:relative;aspect-ratio:1/1;border-radius:12px;overflow:hidden;background:var(--soft)}
 .ph img{width:100%;height:100%;object-fit:cover;display:block}
-.ph select{position:absolute;left:4px;right:4px;bottom:4px;height:32px;border-radius:8px;border:0;font:inherit;font-size:13px;background:rgba(255,255,255,.92)}
+.ph select{position:absolute;left:4px;right:4px;bottom:4px;height:32px;border-radius:8px;border:0;font:inherit;font-size:13px;background:rgba(0,0,0,.82);color:#F5F5F5}
 .ph .x{position:absolute;top:4px;right:4px;width:32px;height:32px;border-radius:16px;border:0;background:rgba(22,32,27,.7);color:#fff;font-size:18px;line-height:1;cursor:pointer}
 .addcol{display:flex;flex-direction:column;gap:8px;aspect-ratio:1/1}
 .addcol .addph{aspect-ratio:auto;flex:1;font-size:12.5px;gap:4px}
@@ -107,12 +110,12 @@ a.pill{background:var(--accent-soft);color:var(--accent-d)}
 .field input,.field select{height:48px;border:1px solid var(--line);border-radius:12px;padding:0 12px;font:inherit;font-size:16px;background:var(--bg);color:var(--ink)}
 .small{font-size:12.5px;color:var(--muted);line-height:1.45}
 nav.tabs{position:fixed;left:0;right:0;bottom:0;z-index:6;background:var(--bg);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom)}
-nav.tabs .in{max-width:640px;margin:0 auto;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));height:64px}
-nav.tabs a{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:12px;color:var(--muted)}
+nav.tabs .in{max-width:640px;margin:0 auto;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));height:64px}
+nav.tabs a{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:1.2px}
 nav.tabs a[aria-current="page"]{color:var(--accent);font-weight:600}
 nav.tabs a svg{stroke:currentColor}
-dialog{border:0;border-radius:18px;padding:20px;width:min(92vw,440px);color:var(--ink)}
-dialog::backdrop{background:rgba(22,32,27,.45)}
+dialog{border:1px solid var(--line);border-radius:16px;padding:20px;width:min(92vw,440px);color:var(--ink);background:var(--panel)}
+dialog::backdrop{background:rgba(0,0,0,.7)}
 [hidden]{display:none!important}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 </style>
@@ -126,22 +129,22 @@ window.goatcounter = {no_onload: true};
 <header class="top" id="top">
   <div class="wrap">
     <div class="brand">
-      <div>
-        <h1>Polyglot Asian Medicine</h1>
-        <p>Drug names across Asian traditions</p>
-      </div>
+      <a href="#" class="logo" aria-label="Polyglot Asian Medicine home">
+        <img src="icons/leaf-white.png" alt="" width="30" height="23" onerror="this.remove()">
+        <span><h1>Polyglot Asian Medicine</h1><p>Drug names across Asian traditions</p></span>
+      </a>
       <button class="iconbtn" id="settingsBtn" aria-label="Settings">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#16201B" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F5F5F5" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
       </button>
     </div>
     <form class="searchrow" id="searchForm" role="search">
       <label class="searchbox">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#55625B" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#A3A3A3" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
         <span class="sr">Search drug or plant names</span>
         <input id="q" type="search" enterkeyhint="search" autocomplete="off" autocapitalize="off" placeholder="halia, 生姜, ginger, Zingiber…">
       </label>
       <a class="scanbtn" href="#scan" aria-label="Scan a plant">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8V6a2 2 0 0 1 2-2h2M16 4h2a2 2 0 0 1 2 2v2M20 16v2a2 2 0 0 1-2 2h-2M8 20H6a2 2 0 0 1-2-2v-2"/><circle cx="12" cy="12" r="3.5"/></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8V6a2 2 0 0 1 2-2h2M16 4h2a2 2 0 0 1 2 2v2M20 16v2a2 2 0 0 1-2 2h-2M8 20H6a2 2 0 0 1-2-2v-2"/><circle cx="12" cy="12" r="3.5"/></svg>
       </a>
     </form>
   </div>
@@ -158,6 +161,8 @@ window.goatcounter = {no_onload: true};
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>Search</a>
     <a href="#scan" id="tabScan">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8V6a2 2 0 0 1 2-2h2M16 4h2a2 2 0 0 1 2 2v2M20 16v2a2 2 0 0 1-2 2h-2M8 20H6a2 2 0 0 1-2-2v-2"/><circle cx="12" cy="12" r="3.5"/></svg>Scan</a>
+    <a href="#help" id="tabHelp">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.6v.6M12 17v.5"/></svg>How to</a>
     <a href="#about" id="tabAbout">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg>About</a>
   </div>
@@ -206,8 +211,8 @@ function store(k, v){ try{ if(v === undefined) return localStorage.getItem(k); i
 function arr(v){ if(v == null || v === '') return []; return Array.isArray(v) ? v : [v]; }
 function splitList(s, re){ return String(s||'').split(re).map(function(x){return x.trim();}).filter(function(x){ return x && !/^[-–—_.?]+$/.test(x); }); }
 function uniq(a){ var s = {}; return a.filter(function(x){ var k = String(x).toLowerCase(); if(s[k]) return false; s[k] = 1; return true; }); }
-var CHEV = '<svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#55625B" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>';
-var BACK = '<button class="iconbtn plain" onclick="history.back()" aria-label="Back"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#16201B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button>';
+var CHEV = '<svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#A3A3A3" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>';
+var BACK = '<button class="iconbtn plain" onclick="history.back()" aria-label="Back"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#F5F5F5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button>';
 
 var cache = {};
 function getJSON(url){
@@ -267,17 +272,20 @@ function route(){
   $('#chips').hidden = true;
   if(h === 'scan'){ tab = 'scan'; renderScan(); }
   else if(h === 'about'){ tab = 'about'; renderAbout(); }
+  else if(h === 'help'){ tab = 'help'; renderHelp(); }
   else if(h.indexOf('n=') === 0){ renderNode(decodeURIComponent(h.slice(2))); }
   else if(h.indexOf('q=') === 0){ var q = decodeURIComponent(h.slice(2)); $('#q').value = q; renderSearch(q); }
   else { renderHome(); }
   $('#tabSearch').setAttribute('aria-current', tab === 'search' ? 'page' : 'false');
   $('#tabScan').setAttribute('aria-current', tab === 'scan' ? 'page' : 'false');
   $('#tabAbout').setAttribute('aria-current', tab === 'about' ? 'page' : 'false');
+  $('#tabHelp').setAttribute('aria-current', tab === 'help' ? 'page' : 'false');
 }
 window.addEventListener('hashchange', route);
 function trackView(){
   var h = location.hash.replace(/^#/, ''), path;
   if(h === 'scan') path = '/scan';
+  else if(h === 'help') path = '/help';
   else if(h === 'about') path = '/about';
   else if(h.indexOf('q=') === 0) path = '/search';
   else if(h.indexOf('n=') === 0) path = '/entry/' + decodeURIComponent(h.slice(2));
@@ -305,12 +313,12 @@ function renderHome(){
   try{ recent = JSON.parse(store('pg_recent') || '[]'); }catch(e){}
   var ex = ['halia','生姜','kunyit','ginger','Curcuma longa','lengkuas'];
   view.innerHTML =
-    '<div class="meta">Try a name in any language, or a scientific name</div>' +
+    '<div class="meta">Try a name in any language, or a scientific name · <a href="#help">How to use</a></div>' +
     '<div class="tags" style="margin:0 0 18px">' + ex.map(function(x){ return '<a class="pill" href="#q=' + encodeURIComponent(x) + '">' + esc(x) + '</a>'; }).join('') + '</div>' +
     (recent.length ? '<section class="blk"><h3>Recently viewed</h3><div class="list">' + recent.map(function(r){
       return '<a class="card" href="' + linkTo(r.id) + '"><div class="row1"><span class="name">' + esc(r.label) + '</span>' + tagFor(r.group) + '</div>' + (r.sub ? '<div class="sub">' + esc(r.sub) + '</div>' : '') + '</a>';
     }).join('') + '</div></section>' : '') +
-    '<a class="card" href="#scan" style="display:flex;gap:14px;align-items:center;margin-top:6px"><span class="scanbtn" aria-hidden="true" style="width:44px;height:44px"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8V6a2 2 0 0 1 2-2h2M16 4h2a2 2 0 0 1 2 2v2M20 16v2a2 2 0 0 1-2 2h-2M8 20H6a2 2 0 0 1-2-2v-2"/><circle cx="12" cy="12" r="3.5"/></svg></span><span><span class="name" style="font-size:16px;font-weight:600;display:block">Scan a plant</span><span class="note">Photograph a leaf or flower and get a best guess</span></span></a>';
+    '<a class="card" href="#scan" style="display:flex;gap:14px;align-items:center;margin-top:6px"><span class="scanbtn" aria-hidden="true" style="width:44px;height:44px"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8V6a2 2 0 0 1 2-2h2M16 4h2a2 2 0 0 1 2 2v2M20 16v2a2 2 0 0 1-2 2h-2M8 20H6a2 2 0 0 1-2-2v-2"/><circle cx="12" cy="12" r="3.5"/></svg></span><span><span class="name" style="font-size:16px;font-weight:600;display:block">Scan a plant</span><span class="note">Photograph a leaf or flower and get a best guess</span></span></a>';
 }
 function remember(rec){
   var list = [];
@@ -615,6 +623,36 @@ function renderAbout(){
     '<section class="blk"><h3>Privacy</h3><div class="prose small">This site counts visits using GoatCounter to understand how it is used. It records the date and time of each visit, the screen viewed, the type of device and browser, and an approximate location (country and region) derived from your IP address. Your IP address is not stored, no cookies are used, search terms are not recorded, and no information is shared for advertising. Photos you scan are sent to Pl@ntNet for identification and are not stored by this site. Questions: <a href="mailto:msb@ntu.edu.sg">msb@ntu.edu.sg</a>.</div></section>';
 }
 
+
+/* ===== How to use ===== */
+function renderHelp(){
+  function step(n, title, body){ return '<div class="src" style="display:flex;gap:12px"><b style="color:var(--accent);font-size:18px;line-height:1.2">' + n + '</b><div style="margin:0;color:var(--ink2);font-size:14.5px;line-height:1.5"><b style="display:block;color:var(--ink);font-size:15px;margin-bottom:2px">' + title + '</b>' + body + '</div></div>'; }
+  view.innerHTML = '<div class="hero"><h2 style="font-size:24px">How to use</h2><div class="alt">Find a medicinal plant or drug, and see what it is called across Asian medical traditions.</div></div>' +
+  '<section class="blk"><h3>Search</h3>' +
+    step(1, 'Type any name', 'Malay (<i>halia</i>), Chinese characters (生姜) or pinyin (<i>sheng jiang</i>), English (<i>ginger</i>), or a scientific name (<i>Zingiber officinale</i>). Partial words work too.') +
+    step(2, 'Filter by tradition', 'The chips under the search box show how many matches come from each language. Tap one to narrow the list.') +
+    step(3, 'Read the result cards', 'Each card shows the name, its language, and what it refers to: a scientific name, or the main drug it is an alternative name for. <span style="color:var(--warn-tag-ink)">Amber cards</span> are homonyms: one name used for different drugs. Check these carefully.') +
+  '</section>' +
+  '<section class="blk"><h3>An entry page</h3>' +
+    step(4, 'Same plant, other traditions', 'The key section. It gathers every name linked to the same species, grouped by language: Chinese, Malay, Sanskrit, Tamil, Hindi and more. Tap any name to open it.') +
+    step(5, 'Sources, uses and regions', 'Below are the historical source texts with dates, recorded medical uses, regions, alternative names, and links to GBIF, Kew (POWO), HERB, TCMIO and other databases.') +
+    step(6, 'Network graph', 'For the full interactive graph and map, tap <i>Open network graph &amp; map</i> at the bottom. This opens the desktop site.') +
+  '</section>' +
+  '<section class="blk"><h3>Scan a plant</h3>' +
+    step(7, 'Take or upload photos', 'Tap <b>Scan</b>, then <i>Take photo</i> or <i>Upload from phone</i>. Add up to 5 photos of the <b>same plant</b>: a leaf, a flower, a fruit. Sharp close-ups against a plain background work best.') +
+    step(8, 'Say which part it is', 'Under each photo choose Leaf, Flower, Fruit or Bark (or leave Auto). This improves accuracy.') +
+    step(9, 'Choose the flora', 'Tap <i>Change</i> next to Flora. For Singapore and Malaysia choose <b>Malesia</b>; for medicinal species try <b>Useful plants of Asia</b>.') +
+    step(10, 'Check the guesses', 'Results are ranked by confidence. Tap <i>Open in Polyglot</i> to see the plant&rsquo;s names across traditions. Treat every result as a suggestion: many medicinal plants look alike, so confirm with a specimen or an expert before any use.') +
+  '</section>' +
+  '<section class="blk"><h3>Add to your home screen</h3>' +
+    '<div class="prose" style="font-size:14.5px"><b>Android (Chrome):</b> tap ⋮ → <i>Add to Home screen</i> or <i>Install app</i>.<br><b>iPhone (Safari):</b> tap the Share button → <i>Add to Home Screen</i>.<br>The app updates itself; there is nothing to reinstall.</div>' +
+  '</section>' +
+  '<section class="blk"><h3>Citing</h3>' +
+    '<div class="prose small">Khoo, C.S.G., Stanley-Baker, M., Zakaria, F.B., Chen, J., Ang, S.Q.R., &amp; Huang, B. (2023). Development of the Polyglot Asian Medicine Knowledge Graph System. <i>ICADL 2023</i>, LNCS 14458, 3–11. <a href="https://doi.org/10.1007/978-981-99-8088-8_1" target="_blank" rel="noopener">doi.org/10.1007/978-981-99-8088-8_1</a></div>' +
+  '</section>' +
+  '<section class="blk stack"><a class="btn" href="#">Start searching</a><a class="btn ghost" href="#scan">Scan a plant</a></section>';
+}
+
 /* ===== Scan ===== */
 var photos = []; // {blob, url, organ}
 var ORGANS = [['auto','Auto'],['leaf','Leaf'],['flower','Flower'],['fruit','Fruit'],['bark','Bark']];
@@ -640,7 +678,7 @@ function drawPhotos(){
   el.innerHTML = photos.map(function(p, i){
     return '<div class="ph"><img src="' + p.url + '" alt="Photo ' + (i+1) + '"><button class="x" data-i="' + i + '" aria-label="Remove photo ' + (i+1) + '">×</button>' +
       '<label class="sr" for="org' + i + '">Plant part for photo ' + (i+1) + '</label><select id="org' + i + '" data-i="' + i + '">' + ORGANS.map(function(o){ return '<option value="' + o[0] + '"' + (o[0] === p.organ ? ' selected' : '') + '>' + o[1] + '</option>'; }).join('') + '</select></div>';
-  }).join('') + (photos.length < 5 ? '<div class="addcol"><button class="addph" id="addCam"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#55625B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8a2 2 0 0 1 2-2h2l2-2h6l2 2h2a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><circle cx="12" cy="13" r="3.5"/></svg>Take photo</button><button class="addph" id="addLib"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#55625B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 17l-5-5-9 8"/></svg>Upload from phone</button></div>' : '');
+  }).join('') + (photos.length < 5 ? '<div class="addcol"><button class="addph" id="addCam"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#A3A3A3" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8a2 2 0 0 1 2-2h2l2-2h6l2 2h2a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><circle cx="12" cy="13" r="3.5"/></svg>Take photo</button><button class="addph" id="addLib"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#A3A3A3" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 17l-5-5-9 8"/></svg>Upload from phone</button></div>' : '');
   el.onclick = function(e){
     var x = e.target.closest('.x');
     if(x){ var i = +x.getAttribute('data-i'); URL.revokeObjectURL(photos[i].url); photos.splice(i,1); renderScan(); return; }
@@ -714,7 +752,7 @@ function drawScanResults(j){
     if(r.powo && r.powo.id) links.push('<a href="https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:' + encodeURIComponent(r.powo.id) + '" target="_blank" rel="noopener">POWO</a>');
     return '<div class="card res' + (i === 0 ? ' top' : '') + '">' +
       '<div class="row1"><span class="name sci">' + esc(name) + '</span><span class="tag' + (i === 0 ? '' : ' grey') + '">' + pct + '%</span></div>' +
-      '<div class="bar"><i style="width:' + Math.max(2, pct) + '%;' + (i === 0 ? '' : 'background:#7F8C85') + '"></i></div>' +
+      '<div class="bar"><i style="width:' + Math.max(2, pct) + '%;' + (i === 0 ? '' : 'background:#6B6B6B') + '"></i></div>' +
       (common || fam ? '<div class="note">' + esc([common, fam].filter(Boolean).join(' — ')) + '</div>' : '') +
       '<div class="note" id="pg' + i + '" style="margin-top:8px">Checking Polyglot…</div>' +
       (links.length ? '<div class="small" style="margin-top:6px">' + links.join(' · ') + '</div>' : '') +
