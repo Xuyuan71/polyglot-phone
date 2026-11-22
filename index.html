@@ -116,6 +116,11 @@ dialog::backdrop{background:rgba(22,32,27,.45)}
 [hidden]{display:none!important}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 </style>
+<script>
+// GoatCounter (privacy-friendly visit counts). Views are counted by screen type; search terms are never sent.
+window.goatcounter = {no_onload: true};
+</script>
+<script data-goatcounter="https://pokyglot.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </head>
 <body>
 <header class="top" id="top">
@@ -270,6 +275,17 @@ function route(){
   $('#tabAbout').setAttribute('aria-current', tab === 'about' ? 'page' : 'false');
 }
 window.addEventListener('hashchange', route);
+function trackView(){
+  var h = location.hash.replace(/^#/, ''), path;
+  if(h === 'scan') path = '/scan';
+  else if(h === 'about') path = '/about';
+  else if(h.indexOf('q=') === 0) path = '/search';
+  else if(h.indexOf('n=') === 0) path = '/entry/' + decodeURIComponent(h.slice(2));
+  else path = '/';
+  var send = function(){ try{ if(window.goatcounter && window.goatcounter.count) window.goatcounter.count({path: path, title: document.title}); }catch(e){} };
+  if(window.goatcounter && window.goatcounter.count) send(); else setTimeout(send, 1500);
+}
+window.addEventListener('hashchange', trackView);
 view.addEventListener('click', function(e){
   var b = e.target.closest('.morebtn'); if(!b) return;
   Array.prototype.forEach.call(b.parentNode.querySelectorAll('[hidden]'), function(x){ x.hidden = false; });
@@ -595,7 +611,8 @@ function renderAbout(){
   view.innerHTML = '<div class="hero"><h2 style="font-size:24px">About</h2></div>' +
     '<div class="prose" style="margin-bottom:14px">Polyglot Asian Medicine links the names of traditional drugs across Chinese, Malay, South Asian and other medical languages, with their scientific names, source texts and regions.</div>' +
     '<div class="prose" style="margin-bottom:18px">This is the phone interface. The full network graph and map remain on the <a href="https://kgraph.sg/polyglot/" target="_blank" rel="noopener">desktop site</a>.</div>' +
-    '<section class="blk"><h3>Plant scanning</h3><div class="prose small">The image-based plant species identification service used, is based on the Pl@ntNet recognition API, regularly updated and accessible through the site <a href="https://my.plantnet.org/" target="_blank" rel="noopener">https://my.plantnet.org/</a>. Scan results are suggestions only.</div></section>';
+    '<section class="blk"><h3>Plant scanning</h3><div class="prose small">The image-based plant species identification service used, is based on the Pl@ntNet recognition API, regularly updated and accessible through the site <a href="https://my.plantnet.org/" target="_blank" rel="noopener">https://my.plantnet.org/</a>. Scan results are suggestions only.</div></section>' +
+    '<section class="blk"><h3>Privacy</h3><div class="prose small">This site counts visits using GoatCounter to understand how it is used. It records the date and time of each visit, the screen viewed, the type of device and browser, and an approximate location (country and region) derived from your IP address. Your IP address is not stored, no cookies are used, search terms are not recorded, and no information is shared for advertising. Photos you scan are sent to Pl@ntNet for identification and are not stored by this site. Questions: via the project site, <a href="https://www.polyglotasianmedicine.com/" target="_blank" rel="noopener">polyglotasianmedicine.com</a>.</div></section>';
 }
 
 /* ===== Scan ===== */
@@ -760,6 +777,7 @@ $('#settings').addEventListener('close', function(){
 });
 
 route();
+trackView();
 })();
 </script>
 </body>
