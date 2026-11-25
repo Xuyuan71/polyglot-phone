@@ -47,7 +47,7 @@ jobs:
           python3 scripts/make_leaf.py src-icon.png _site/icons/leaf-white.png
           ls -l _site/icons
       - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v4
         with:
           path: _site
       - id: deployment
